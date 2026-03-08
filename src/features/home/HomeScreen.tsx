@@ -22,9 +22,21 @@ const attendance = [
 ];
 
 export default function HomeScreen() {
+    // helper to format date as: MON, 08 MAR 2026
+    const formatDate = (d: Date) => {
+        const weekday = d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+        const day = String(d.getDate()).padStart(2, '0');
+        const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        const month = months[d.getMonth()];
+        const year = d.getFullYear();
+        return `${weekday}, ${day} ${month} ${year}`;
+    };
+
+    const todayStr = React.useMemo(() => formatDate(new Date()), []);
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.heading}>Good Morning,</Text>
+            <Text style={styles.heading}>Welcome, Have a nice day</Text>
 
             <Card style={styles.headerCard}>
                 <View style={styles.headerTop}>
@@ -38,7 +50,7 @@ export default function HomeScreen() {
                     </View>
                 </View>
 
-                <Text style={styles.dateText}>MON, 08 MAR 2026</Text>
+                <Text style={styles.dateText}>{todayStr}</Text>
             </Card>
 
             <View style={styles.statsRow}>

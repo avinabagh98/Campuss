@@ -26,14 +26,26 @@ export const loginUser = createAsyncThunk(
     }
 );
 
+export const loadTokenFromStorage = createAsyncThunk(
+    'auth/loadToken',
+    async () => {
+        const token = await AsyncStorage.getItem('token');
+        return token;
+    }
+);
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        token: null,
+        token: null as string | null,
         loading: false,
-        error: <any>null,
+        error: null as any,
     },
     reducers: {
+        setToken: (state, action) => {
+            state.token = action.payload;
+            try { AsyncStorage.setItem('token', action.payload); } catch (e) { /* ignore */ }
+        },
         logout: state => {
             state.token = null;
             AsyncStorage.removeItem('token');
@@ -52,9 +64,14 @@ const authSlice = createSlice({
             .addCase(loginUser.rejected, state => {
                 state.loading = false;
                 state.error = 'Invalid Credentials';
+            })
+            .addCase(loadTokenFromStorage.fulfilled, (state, action) => {
+                if (action.payload) {
+                    state.token = action.payload;
+                }
             });
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setToken } = authSlice.actions;
 export default authSlice.reducer;
