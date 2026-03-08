@@ -1,0 +1,60 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Config from 'react-native-config';
+
+const BASE_URL = Config.BASE_URL;
+console.log('>>>>>>>BASE_URL>>>>>>', BASE_URL);
+
+
+export const loginUser = createAsyncThunk(
+    'auth/loginUser',
+    async ({ username, password }: any, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/api/login`, {
+                username,
+                password,
+            });
+
+            const token = response.data.data.access_token;
+            await AsyncStorage.setItem('token', token);
+
+            return token;
+        } catch (error: any) {
+            return rejectWithValue('Login Failed');
+        }
+    }
+);
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState: {
+        token: null,
+        loading: false,
+        error: <any>null,
+    },
+    reducers: {
+        logout: state => {
+            state.token = null;
+            AsyncStorage.removeItem('token');
+        },
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(loginUser.pending, state => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.token = action.payload;
+            })
+            .addCase(loginUser.rejected, state => {
+                state.loading = false;
+                state.error = 'Invalid Credentials';
+            });
+    },
+});
+
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;
