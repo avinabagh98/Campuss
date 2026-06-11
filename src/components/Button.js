@@ -1,19 +1,15 @@
 import React from "react";
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Colours } from "../theme/Colours";
 
-type ButtonType = "primary" | "secondary" | "outline";
-
-interface ButtonProps {
-    title: string;
-    type?: ButtonType;
-    onPress?: () => void;
-    disabled?: boolean;
-    style?: ViewStyle | ViewStyle[];
-    textStyle?: TextStyle | TextStyle[];
-}
-
-export default function Button({ title, type = "primary", onPress, disabled = false, style, textStyle: customTextStyle }: ButtonProps) {
+export default function Button({
+    title,
+    type = "primary",
+    onPress,
+    disabled = false,
+    style,
+    textStyle: customTextStyle
+}) {
 
     const buttonStyle = [
         styles.button,
@@ -22,14 +18,14 @@ export default function Button({ title, type = "primary", onPress, disabled = fa
         type === "outline" && styles.outline,
         disabled && styles.disabled,
         style
-    ] as any;
+    ];
 
     const textStyle = [
         styles.text,
         type === "outline" ? styles.outlineText : styles.primaryText,
         disabled && styles.disabledText,
         customTextStyle
-    ] as any;
+    ];
 
     return (
         <TouchableOpacity
@@ -42,7 +38,7 @@ export default function Button({ title, type = "primary", onPress, disabled = fa
         >
             <Text style={textStyle}>{title}</Text>
         </TouchableOpacity>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -82,8 +78,9 @@ const styles = StyleSheet.create({
     disabled: {
         opacity: 0.6
     },
+
     disabledText: {
-        color: '#ccc'
+        color: "#ccc"
     }
 
-})
+});

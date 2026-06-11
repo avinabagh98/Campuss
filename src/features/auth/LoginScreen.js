@@ -7,10 +7,9 @@ import Card from '../../components/Card';
 import Input from '../../components/Input';
 import { Colours } from '../../theme/Colours';
 
-
 export default function LoginScreen() {
-    const dispatch = useDispatch<any>();
-    const { loading, error } = useSelector((state: any) => state.auth || {});
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.auth || {});
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,12 +28,18 @@ export default function LoginScreen() {
                 <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
                     <View style={styles.brand}>
 
-                        <Image source={require('../../../assets/enter_pass.png')} style={{ width: 200, height: 140, resizeMode: 'contain', marginBottom: 12 }} />
+                        <Image
+                            source={require('../../../assets/enter_pass.png')}
+                            style={{ width: 200, height: 140, resizeMode: 'contain', marginBottom: 12 }}
+                        />
+
                         <Text style={styles.title}>Campuss</Text>
                         <Text style={styles.subtitle}>Welcome back — please login to continue</Text>
+
                     </View>
 
                     <Card style={styles.card}>
+
                         <Input
                             placeholder="Username"
                             value={username}
@@ -63,11 +68,15 @@ export default function LoginScreen() {
                                 disabled={loading || !username || !password}
                             />
                         </View>
+
                     </Card>
 
                     <View style={styles.footer}>
-                        <Text style={styles.footerText}>Don't have an account? <Text style={styles.link}>Sign up</Text></Text>
+                        <Text style={styles.footerText}>
+                            Don't have an account? <Text style={styles.link}>Sign up</Text>
+                        </Text>
                     </View>
+
                 </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -76,15 +85,60 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#f6f7fb' },
-    scrollContainer: { flexGrow: 1, padding: 20, justifyContent: 'center' },
-    brand: { alignItems: 'center', marginBottom: 24 },
-    title: { fontSize: 28, fontWeight: '700', color: Colours.brand.primary },
-    subtitle: { fontSize: 14, color: Colours.text.muted, marginTop: 6, textAlign: 'center' },
-    card: { padding: 18 },
-    spacer: { height: 12 },
-    buttonWrap: { marginTop: 18 },
-    error: { color: '#d9534f', marginTop: 10, textAlign: 'center' },
-    footer: { marginTop: 18, alignItems: 'center' },
-    footerText: { color: Colours.text.muted },
-    link: { color: Colours.brand.primary, fontWeight: '600' }
+
+    scrollContainer: {
+        flexGrow: 1,
+        padding: 20,
+        justifyContent: 'center'
+    },
+
+    brand: {
+        alignItems: 'center',
+        marginBottom: 24
+    },
+
+    title: {
+        fontSize: 28,
+        fontWeight: '700',
+        color: Colours.brand.primary
+    },
+
+    subtitle: {
+        fontSize: 14,
+        color: Colours.text.muted,
+        marginTop: 6,
+        textAlign: 'center'
+    },
+
+    card: {
+        padding: 18
+    },
+
+    spacer: {
+        height: 12
+    },
+
+    buttonWrap: {
+        marginTop: 18
+    },
+
+    error: {
+        color: '#d9534f',
+        marginTop: 10,
+        textAlign: 'center'
+    },
+
+    footer: {
+        marginTop: 18,
+        alignItems: 'center'
+    },
+
+    footerText: {
+        color: Colours.text.muted
+    },
+
+    link: {
+        color: Colours.brand.primary,
+        fontWeight: '600'
+    }
 });

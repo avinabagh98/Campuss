@@ -1,9 +1,8 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { Colours } from '../theme/Colours'
+import { Colours } from "../theme/Colours";
 
-export default function Input(props: React.ComponentProps<typeof TextInput>) {
-
+export default function Input(props) {
     return (
         <View style={styles.container}>
             <TextInput
@@ -12,11 +11,10 @@ export default function Input(props: React.ComponentProps<typeof TextInput>) {
                 {...props}
             />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-
     container: {
         borderWidth: 1,
         borderColor: Colours.border.default,
@@ -30,5 +28,4 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: Colours.text.primary
     }
-
-})
+});

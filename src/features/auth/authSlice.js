@@ -3,13 +3,13 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 
+
 const BASE_URL = Config.BASE_URL;
 console.log('>>>>>>>BASE_URL>>>>>>', BASE_URL);
 
-
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
-    async ({ username, password }: any, { rejectWithValue }) => {
+    async ({ username, password }, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${BASE_URL}/api/login`, {
                 username,
@@ -20,7 +20,8 @@ export const loginUser = createAsyncThunk(
             await AsyncStorage.setItem('token', token);
 
             return token;
-        } catch (error: any) {
+        } catch (error) {
+            console.log('Login error:', error);
             return rejectWithValue('Login Failed');
         }
     }
@@ -37,18 +38,22 @@ export const loadTokenFromStorage = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        token: null as string | null,
+        token: null,
         loading: false,
-        error: null as any,
+        error: null,
     },
     reducers: {
         setToken: (state, action) => {
             state.token = action.payload;
-            try { AsyncStorage.setItem('token', action.payload); } catch (e) { /* ignore */ }
+            try {
+                AsyncStorage.setItem('token', action.payload);
+            } catch (e) {
+                /* ignore */
+            }
         },
         logout: state => {
             state.token = null;
-            AsyncStorage.removeItem('token');
+            AsyncStorage.clear();
         },
     },
     extraReducers: builder => {
